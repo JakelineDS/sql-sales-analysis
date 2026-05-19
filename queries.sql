@@ -1,4 +1,7 @@
--- Nivel Basico:
+--------------------------------------------------------------------
+---------------------------Nivel avanzado---------------------------
+--------------------------------------------------------------------
+
 -- Pregunta 1: Mostrar todos los clientes registrados.
 select * from clientes;
 
@@ -88,7 +91,10 @@ from productos;
 select sum(total) as total_ventas
 from ventas;
 
--- Nivel Intermedio
+--------------------------------------------------------------------
+---------------------------Nivel intermedioo------------------------
+--------------------------------------------------------------------
+
 -- Pregunta 1: Mostrar el nombre del cliente y el total de cada venta realizada
 select c.nombre, v.total
 from clientes c
@@ -177,3 +183,101 @@ from productos p;
 -- Pregunta 15: Mostrar la suma de precios únicos de productos.
 select sum(distinct p.precio) as suma_precios
 from productos p;
+
+--------------------------------------------------------------------
+---------------------------Nivel avanzado---------------------------
+--------------------------------------------------------------------
+
+-- Pregunta 1: Mostrar el producto más caro.
+select nombre_producto, precio
+from productos
+where precio = (
+	select max(precio)
+    from productos
+);
+
+-- Pregunta 2: Mostrar el producto más barato.
+select nombre_producto, precio
+from productos
+where precio = (
+	select min(precio)
+    from productos
+);
+
+-- Pregunta 3: Mostrar los productos que tienen un precio mayor al promedio.
+select nombre_producto, precio
+from productos
+where precio > (
+	select avg(precio)
+    from productos
+);
+
+-- Pregunta 4: Mostrar los clientes que realizaron al menos una compra.
+select nombre
+from clientes 
+where id_cliente in (
+	select id_cliente
+    from ventas
+);
+
+-- otra froma
+select c.nombre
+from clientes c
+where exists (
+	select *
+    from ventas v
+    where v.id_cliente = c.id_cliente
+);
+
+-- Pregunta 5: Mostrar los productos que sí fueron vendidos.
+select nombre_producto
+from productos
+where id_producto in (
+	select id_producto
+    from detalle_ventas 
+);
+
+-- Pregunta 6: Mostrar las ventas cuyo total es mayor al promedio de todas las ventas.
+select *
+from ventas
+where total > (
+	select avg(total)
+    from ventas
+);
+
+-- Pregunta 7: Mostrar el cliente que realizó la compra más cara.
+select c.nombre, v.total
+from clientes c
+join ventas v
+on c.id_cliente = v.id_cliente
+where v.total = (
+	select max(total)
+    from ventas
+);
+
+-- Pregunta 8: Mostrar los productos que nunca fueron vendidos.
+select nombre_producto
+from productos
+where id_producto not in (
+	select id_producto
+    from detalle_ventas
+);
+
+-- Pregunta 9: Mostrar los clientes que gastaron más que el promedio de gasto.
+select c.nombre, sum(v.total) as total_gastado
+from clientes
+join ventas v
+on c.id_cliente = v.id_cliente
+group by c.nombre
+having total_gastado > (
+	select avg(total)
+    from ventas
+);
+
+-- Pregunta 10: Mostrar los productos cuyo precio es igual al precio máximo.
+select nombre_producto, precio
+from productos
+where precio = (
+	select max(precio)
+    from productos
+);
