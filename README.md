@@ -1,3 +1,5 @@
+![image alt](https://github.com/JakelineDS/sql-sales-analysis/blob/6f5c11e5ea71efb4eada7bb5e3bce475b316211d/bd_ventas.png)
+
 # Sistema de Ventas - Base de Datos SQL
 
 # Descripcion
